@@ -82,7 +82,7 @@ with tab1:
             # Feature Contribution Visualization
             st.subheader("🔍 Feature Contribution for This Prediction")
 
-            classifier = model.named_steps.get("clsf", None)
+            classifier = model.named_steps.get("clf", None)
 
             if classifier is not None:
                 # Create a SHAP explainer for the model
