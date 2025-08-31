@@ -14,7 +14,7 @@ st.set_page_config(page_title="Bankruptcy Prediction", layout="wide")
 
 # =====================
 # Title & Description
-st.title("📊 Taiwanese Bankruptcy Prediction System")
+st.title("Taiwanese Bankruptcy Prediction System")
 st.write(
     "This tool uses machine learning to predict the risk of bankruptcy based on selected financial ratios. "
     "Provide the required inputs in the sidebar and click **Predict** to see results."
@@ -24,22 +24,31 @@ st.write(
 # Sidebar - Input Features
 st.sidebar.header("🔢 Enter Financial Ratios")
 
-# Example: Replace these with your top selected features
+
 input_features = {
-    "Net Income to Stockholder's Equity": st.sidebar.number_input("Net Income to Stockholder's Equity", value=0.0),
-    "Debt Ratio %": st.sidebar.number_input("Debt Ratio %", value=0.0),
-    "Persistent EPS (Last 4 Seasons)": st.sidebar.number_input("Persistent EPS (Last 4 Seasons)", value=0.0),
-    "Net Profit before Tax / Paid-in Capital": st.sidebar.number_input("Net Profit before Tax / Paid-in Capital", value=0.0),
-    "Borrowing Dependency": st.sidebar.number_input("Borrowing Dependency", value=0.0),
-    # ... add more from your top 15 features
+    " Net Income to Stockholder's Equity": st.sidebar.number_input("Net Income to Stockholder's Equity", value=0.0),
+    " Debt ratio %": st.sidebar.number_input("Debt ratio %", value=0.0),
+    " Persistent EPS in the Last Four Seasons": st.sidebar.number_input("Persistent EPS in the Last Four Seasons", value=0.0),
+    " Net profit before tax/Paid-in capital": st.sidebar.number_input("Net profit before tax/Paid-in capital", value=0.0),
+    " Borrowing dependency": st.sidebar.number_input("Borrowing dependency", value=0.0),
+    " Per Share Net profit before tax (Yuan ¥)": st.sidebar.number_input("Per Share Net profit before tax (Yuan ¥)", value=0.0),
+    " ROA(A) before interest and % after tax": st.sidebar.number_input("ROA(A) before interest and % after tax", value=0.0),
+    " Net Value Per Share (A)": st.sidebar.number_input("Net Value Per Share (A)", value=0.0),
+    " Net Value Per Share (B)": st.sidebar.number_input("Net Value Per Share (B)", value=0.0),
+    " ROA(C) before interest and depreciation before interest": st.sidebar.number_input("ROA(C) before interest and depreciation before interest", value=0.0),
+    " Continuous interest rate (after tax)": st.sidebar.number_input("Continuous interest rate (after tax)", value=0.0),
+    " ROA(B) before interest and depreciation after tax": st.sidebar.number_input("ROA(B) before interest and depreciation after tax", value=0.0),
+    " Net Income to Total Assets": st.sidebar.number_input("Net Income to Total Assets", value=0.0),
+    " Degree of Financial Leverage (DFL)": st.sidebar.number_input("Degree of Financial Leverage (DFL)", value=0.0),
+    " Retained Earnings to Total Assets": st.sidebar.number_input("Retained Earnings to Total Assets", value=0.0),
 }
 
 # Convert input into DataFrame (for prediction later)
 input_df = pd.DataFrame([input_features])
 
 # =====================
-# Main Page - Prediction
-if st.sidebar.button("🚀 Predict"):
+# PREDICTION HAPPENS HERE --- :D
+if st.sidebar.button("📊 Predict"):
     if model is not None:
         # Get probability and prediction
         prob = model.predict_proba(input_df)[0][1]
