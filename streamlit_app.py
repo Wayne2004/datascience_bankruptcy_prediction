@@ -112,7 +112,7 @@ with tab1:
 
                 # =====================
                 # Business Interpretation
-                st.subheader("📌 User Guidance (Business Interpretation)")
+                st.subheader("📌 User Guidance")
 
                 # Risk bucket
                 risk_level = "🟢 Low Risk" if prob <= 0.20 else ("🟡 Moderate Risk" if prob <= 0.50 else "🔴 High Risk")
