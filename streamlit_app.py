@@ -3,6 +3,7 @@ import numpy as np
 import joblib
 import pandas as pd
 import matplotlib.pyplot as plt
+import shap
 
 try:
     model = joblib.load("xgb_feature_selected_pipeline.pkl")
@@ -78,29 +79,38 @@ with tab1:
             st.metric("Final Classification", result["classification"])
 
             # =====================
-            # Feature Importance Visualization
-            st.subheader("🔍 Feature Importance")
+            # Feature Contribution Visualization
+            st.subheader("🔍 Feature Contribution for This Prediction")
+
             classifier = model.named_steps.get("clsf", None)
 
-            if classifier is not None and hasattr(classifier, "feature_importances_"):
-                importances = classifier.feature_importances_
-                features = input_df.columns  # careful if feature selection was used!
+            if classifier is not None:
+                # Create a SHAP explainer for the model
+                explainer = shap.TreeExplainer(classifier)
 
-                feat_imp = pd.DataFrame({
-                    "Feature": features,
-                    "Importance": importances
-                }).sort_values("Importance", ascending=False).head(10)
+                # Compute SHAP values for the single input
+                shap_values = explainer.shap_values(input_df)
 
-                st.subheader("📌 Top 10 Most Important Features")
+                # Create dataframe for contributions
+                contrib_df = pd.DataFrame({
+                    "Feature": input_df.columns,
+                    "Contribution": shap_values[0]  # for this single instance
+                }).sort_values("Contribution", key=abs, ascending=False)
+
+                # Show top 10 contributions
+                top_contrib = contrib_df.head(10)
+
                 fig, ax = plt.subplots(figsize=(6, 4))
-                ax.barh(feat_imp["Feature"], feat_imp["Importance"])
-                ax.set_xlabel("Importance")
-                ax.set_ylabel("Feature")
-                ax.set_title("Feature Importance (XGBoost)")
+                colors = ["red" if val > 0 else "blue" for val in top_contrib["Contribution"]]
+                ax.barh(top_contrib["Feature"], top_contrib["Contribution"], color=colors)
+                ax.set_xlabel("SHAP Value (Impact on Bankruptcy Prediction)")
+                ax.set_title("Top Feature Contributions for This Prediction")
                 ax.invert_yaxis()
                 st.pyplot(fig)
+
+                st.caption("🔴 Positive values push towards 'Bankrupt', 🔵 Negative values push towards 'Non-Bankrupt'.")
             else:
-                st.info("Feature importance not available for this pipeline.")
+                st.info("SHAP analysis not available — classifier not found in pipeline.")
 
 
         else:
