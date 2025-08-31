@@ -109,9 +109,29 @@ with tab1:
                 st.pyplot(fig)
 
                 st.caption("🔴 Positive values push towards 'Bankrupt', 🔵 Negative values push towards 'Non-Bankrupt'.")
+
+                # =====================
+                # Business Interpretation
+                st.subheader("📌 User Guidance (Business Interpretation)")
+
+                # Risk bucket
+                risk_level = "Low Risk" if prob <= 0.20 else ("Moderate Risk" if prob <= 0.50 else "High Risk")
+                st.write(f"**Risk Category:** {risk_level}")
+
+                # Top red flags
+                red_flags = top_contrib[top_contrib["Contribution"] > 0].head(2)
+                if not red_flags.empty:
+                    signals = ", and ".join(red_flags["Feature"].tolist())
+                    st.write(f"🚨 **Top Warning Signals:** {signals} are pushing the company towards bankruptcy.")
+
+                # Recommendations (from negative contributors)
+                positives = top_contrib[top_contrib["Contribution"] < 0].head(2)
+                if not positives.empty:
+                    recs = ", and ".join(positives["Feature"].tolist())
+                    st.write(f"✅ **Improvement Suggestions:** Strengthening {recs} could reduce bankruptcy risk.")
+
             else:
                 st.info("SHAP analysis not available — classifier not found in pipeline.")
-
 
         else:
             st.warning("⚠️ Model not loaded. Please train and load your model first.")
