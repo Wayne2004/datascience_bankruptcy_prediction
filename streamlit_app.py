@@ -2,6 +2,7 @@ import streamlit as st
 import numpy as np
 import joblib
 import pandas as pd
+import matplotlib.pyplot as plt
 
 try:
     model = joblib.load("xgb_feature_selected_pipeline.pkl")
@@ -24,7 +25,6 @@ st.write(
 # =====================
 # Sidebar - Input Features
 st.sidebar.header("🔢 Enter Financial Ratios")
-
 
 input_features = {
     " Net Income to Stockholder's Equity": st.sidebar.number_input("Net Income to Stockholder's Equity", value=0.0),
@@ -76,6 +76,24 @@ with tab1:
             st.subheader("✅ Prediction Results" if result["classification"] == "Non-Bankrupt" else "❌ Prediction Results")
             st.metric("Bankruptcy Risk Probability", result["probability"])
             st.metric("Final Classification", result["classification"])
+
+            # =====================
+            # Feature Importance Visualization
+            st.subheader("🔍 Feature Importance")
+            try:
+                importances = model.named_steps["classifier"].feature_importances_
+                features = input_df.columns
+                feat_imp = pd.DataFrame({"Feature": features, "Importance": importances})
+                feat_imp = feat_imp.sort_values("Importance", ascending=False).head(10)
+
+                plt.figure(figsize=(6, 4))
+                plt.barh(feat_imp["Feature"], feat_imp["Importance"])
+                plt.gca().invert_yaxis()
+                plt.title("Top 10 Important Features")
+                st.pyplot(plt)
+            except Exception as e:
+                st.info("Feature importance not available for this model.")
+
         else:
             st.warning("⚠️ Model not loaded. Please train and load your model first.")
 
@@ -90,6 +108,18 @@ with tab2:
             }
             for r in st.session_state.history
         ])
+
         st.dataframe(hist_df, use_container_width=True)
+
+        # =====================
+        # History Visualizations
+        st.subheader("📈 History Trends")
+        try:
+            hist_df["Risk Probability (%)"] = hist_df["Risk Probability"].str.replace("%", "").astype(float)
+
+            st.line_chart(hist_df["Risk Probability (%)"])
+            st.bar_chart(hist_df["Final Classification"].value_counts())
+        except Exception as e:
+            st.info("Could not generate history charts.")
     else:
         st.info("No predictions made yet.")
