@@ -2,3 +2,4 @@ streamlit
 joblib
 imbalanced-learn
 xgboost
+matplotlib
