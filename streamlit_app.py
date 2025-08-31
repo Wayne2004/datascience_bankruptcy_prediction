@@ -113,11 +113,12 @@ with tab2:
 
         # =====================
         # History Visualizations
-        st.subheader("📈 History Trends")
         try:
             hist_df["Risk Probability (%)"] = hist_df["Risk Probability"].str.replace("%", "").astype(float)
 
+            st.subheader("📈 History Trends")
             st.line_chart(hist_df["Risk Probability (%)"])
+            st.subheader("📈 History Cases Count")
             st.bar_chart(hist_df["Final Classification"].value_counts())
         except Exception as e:
             st.info("Could not generate history charts.")
