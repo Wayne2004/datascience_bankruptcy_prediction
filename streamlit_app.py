@@ -48,15 +48,48 @@ input_features = {
 input_df = pd.DataFrame([input_features])
 
 # =====================
-# PREDICTION HAPPENS HERE --- :D
-if st.sidebar.button("📊 Predict"):
-    if model is not None:
-        # Get probability and prediction
-        prob = model.predict_proba(input_df)[0][1]
-        pred = model.predict(input_df)[0]
+# Session State for history
+if "history" not in st.session_state:
+    st.session_state.history = []
 
-        st.subheader("✅ Prediction Results")
-        st.metric("Bankruptcy Risk Probability", f"{prob*100:.2f}%")
-        st.metric("Final Classification", "Bankrupt" if pred == 1 else "Non-Bankrupt")
+# =====================
+# Tabs
+tab1, tab2 = st.tabs(["📊 Prediction", "📜 History"])
+
+with tab1:
+    if st.sidebar.button("Predict"):
+        if model is not None:
+            # Get probability and prediction
+            prob = model.predict_proba(input_df)[0][1]
+            pred = model.predict(input_df)[0]
+
+            result = {
+                "inputs": input_features,
+                "probability": f"{prob*100:.2f}%",
+                "classification": "Bankrupt" if pred == 1 else "Non-Bankrupt"
+            }
+
+            # Save to session history
+            st.session_state.history.append(result)
+
+            # Show results
+            st.subheader("✅ Prediction Results")
+            st.metric("Bankruptcy Risk Probability", result["probability"])
+            st.metric("Final Classification", result["classification"])
+        else:
+            st.warning("⚠️ Model not loaded. Please train and load your model first.")
+
+with tab2:
+    st.subheader("📜 Past Predictions")
+    if st.session_state.history:
+        hist_df = pd.DataFrame([
+            {
+                **r["inputs"],
+                "Risk Probability": r["probability"],
+                "Final Classification": r["classification"]
+            }
+            for r in st.session_state.history
+        ])
+        st.dataframe(hist_df, use_container_width=True)
     else:
-        st.warning("⚠️ Model not loaded. Please train and load your model first.")
+        st.info("No predictions made yet.")
