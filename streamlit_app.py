@@ -73,7 +73,7 @@ with tab1:
             st.session_state.history.append(result)
 
             # Show results
-            st.subheader("✅ Prediction Results")
+            st.subheader("✅ Prediction Results" if result["classification"] == "Non-Bankrupt" else "❌ Prediction Results")
             st.metric("Bankruptcy Risk Probability", result["probability"])
             st.metric("Final Classification", result["classification"])
         else:
