@@ -7,7 +7,7 @@ try:
     model = joblib.load("xgb_feature_selected_pipeline.pkl")
 except Exception as e:
     model = None
-    st.error(f"Error: {e}")
+    st.error(f"❌ Error loading with joblib: {repr(e)}")
 
 # =====================
 # Page Config
