@@ -3,3 +3,4 @@ joblib
 imbalanced-learn
 xgboost
 matplotlib
+shap
