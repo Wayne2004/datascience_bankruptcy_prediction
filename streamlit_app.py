@@ -80,19 +80,28 @@ with tab1:
             # =====================
             # Feature Importance Visualization
             st.subheader("🔍 Feature Importance")
-            try:
-                importances = model.named_steps["classifier"].feature_importances_
-                features = input_df.columns
-                feat_imp = pd.DataFrame({"Feature": features, "Importance": importances})
-                feat_imp = feat_imp.sort_values("Importance", ascending=False).head(10)
+            classifier = model.named_steps.get("clsf", None)
 
-                plt.figure(figsize=(6, 4))
-                plt.barh(feat_imp["Feature"], feat_imp["Importance"])
-                plt.gca().invert_yaxis()
-                plt.title("Top 10 Important Features")
-                st.pyplot(plt)
-            except Exception as e:
-                st.info("Feature importance not available for this model.")
+            if classifier is not None and hasattr(classifier, "feature_importances_"):
+                importances = classifier.feature_importances_
+                features = input_df.columns  # careful if feature selection was used!
+
+                feat_imp = pd.DataFrame({
+                    "Feature": features,
+                    "Importance": importances
+                }).sort_values("Importance", ascending=False).head(10)
+
+                st.subheader("📌 Top 10 Most Important Features")
+                fig, ax = plt.subplots(figsize=(6, 4))
+                ax.barh(feat_imp["Feature"], feat_imp["Importance"])
+                ax.set_xlabel("Importance")
+                ax.set_ylabel("Feature")
+                ax.set_title("Feature Importance (XGBoost)")
+                ax.invert_yaxis()
+                st.pyplot(fig)
+            else:
+                st.info("Feature importance not available for this pipeline.")
+
 
         else:
             st.warning("⚠️ Model not loaded. Please train and load your model first.")
