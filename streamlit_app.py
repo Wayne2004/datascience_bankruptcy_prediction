@@ -74,7 +74,7 @@ with tab1:
             st.session_state.history.append(result)
 
             # Show results
-            st.subheader("✅ Prediction Results" if result["classification"] == "Non-Bankrupt" else "❌ Prediction Results")
+            st.subheader("✅ Prediction Results" if result["classification"] == "Non-Bankrupt" else "💸 Prediction Results")
             st.metric("Bankruptcy Risk Probability", result["probability"])
             st.metric("Final Classification", result["classification"])
 
@@ -108,14 +108,14 @@ with tab1:
                 ax.invert_yaxis()
                 st.pyplot(fig)
 
-                st.caption("🔴 Positive values push towards 'Bankrupt', 🔵 Negative values push towards 'Non-Bankrupt'.")
+                st.caption("🔵 Negative values push towards 'Non-Bankrupt'  🔴 Positive values push towards 'Bankrupt'.")
 
                 # =====================
                 # Business Interpretation
                 st.subheader("📌 User Guidance (Business Interpretation)")
 
                 # Risk bucket
-                risk_level = "Low Risk" if prob <= 0.20 else ("Moderate Risk" if prob <= 0.50 else "High Risk")
+                risk_level = "🟢 Low Risk" if prob <= 0.20 else ("🟡 Moderate Risk" if prob <= 0.50 else "🔴 High Risk")
                 st.write(f"**Risk Category:** {risk_level}")
 
                 # Top red flags
