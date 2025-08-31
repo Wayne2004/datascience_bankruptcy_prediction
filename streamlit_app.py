@@ -5,8 +5,9 @@ import pandas as pd
 
 try:
     model = joblib.load("xgb_feature_selected_pipeline.pkl")
-except:
+except Exception as e:
     model = None
+    st.error(f"Error: {e}")
 
 # =====================
 # Page Config
