@@ -3,7 +3,10 @@ import numpy as np
 import joblib
 import pandas as pd
 
-model = joblib.load("xgb_feature_selected_pipeline.pkl")
+try:
+    model = joblib.load("xgb_feature_selected_pipeline.pkl")
+except:
+    model = None
 
 # =====================
 # Page Config
