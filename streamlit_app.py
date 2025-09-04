@@ -100,13 +100,19 @@ with tab1:
                 # Show top 10 contributions
                 top_contrib = contrib_df.head(10)
 
-                fig, ax = plt.subplots(figsize=(2, 1))
+                fig, ax = plt.subplots(figsize=(6,4))
                 colors = ["red" if val > 0 else "blue" for val in top_contrib["Contribution"]]
                 ax.barh(top_contrib["Feature"], top_contrib["Contribution"], color=colors)
                 ax.set_xlabel("SHAP Value (Impact on Bankruptcy Prediction)")
                 ax.set_title("Top Feature Contributions for This Prediction")
                 ax.invert_yaxis()
-                st.pyplot(fig)
+
+                buf = io.BytesIO()
+                fig.savefig(buf, format="png", bbox_inches="tight")
+                buf.seek(0)
+                
+                # Display the image with custom width (e.g. scaled down to 400px)
+                st.image(buf, width=400
 
                 st.write("🔵 Negative values push towards 'Non-Bankrupt'  🔴 Positive values push towards 'Bankrupt'.")
 
