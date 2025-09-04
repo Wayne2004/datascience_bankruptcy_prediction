@@ -113,7 +113,7 @@ with tab1:
                 buf.seek(0)
                 
                 # Display the image with custom width (e.g. scaled down to 400px)
-                st.image(buf, width=400)
+                st.image(buf, width=800)
 
                 st.write("🔵 Negative values push towards 'Non-Bankrupt'  🔴 Positive values push towards 'Bankrupt'.")
 
