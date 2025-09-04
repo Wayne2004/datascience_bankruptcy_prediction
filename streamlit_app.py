@@ -100,7 +100,7 @@ with tab1:
                 # Show top 10 contributions
                 top_contrib = contrib_df.head(10)
 
-                fig, ax = plt.subplots(figsize=(6, 4))
+                fig, ax = plt.subplots(figsize=(4, 2))
                 colors = ["red" if val > 0 else "blue" for val in top_contrib["Contribution"]]
                 ax.barh(top_contrib["Feature"], top_contrib["Contribution"], color=colors)
                 ax.set_xlabel("SHAP Value (Impact on Bankruptcy Prediction)")
@@ -108,7 +108,7 @@ with tab1:
                 ax.invert_yaxis()
                 st.pyplot(fig)
 
-                st.caption("🔵 Negative values push towards 'Non-Bankrupt'  🔴 Positive values push towards 'Bankrupt'.")
+                st.write("🔵 Negative values push towards 'Non-Bankrupt'  🔴 Positive values push towards 'Bankrupt'.")
 
                 # =====================
                 # Business Interpretation
