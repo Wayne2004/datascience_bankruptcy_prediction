@@ -17,7 +17,7 @@ st.set_page_config(page_title="Bankruptcy Prediction", layout="wide")
 
 # =====================
 # Title & Description
-st.title("Taiwanese Bankruptcy Prediction System")
+st.title("Taiwaneseee Bankruptcy Prediction System")
 st.write(
     "This tool uses machine learning to predict the risk of bankruptcy based on selected financial ratios. "
     "Provide the required inputs in the sidebar and click **Predict** to see results."
