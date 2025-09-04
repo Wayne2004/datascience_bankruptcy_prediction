@@ -17,7 +17,7 @@ st.set_page_config(page_title="Bankruptcy Prediction", layout="wide")
 
 # =====================
 # Title & Description
-st.title("Taiwaneseee Bankruptcy Prediction System")
+st.title("Taiwanese Bankruptcy Prediction System")
 st.write(
     "This tool uses machine learning to predict the risk of bankruptcy based on selected financial ratios. "
     "Provide the required inputs in the sidebar and click **Predict** to see results."
@@ -100,7 +100,7 @@ with tab1:
                 # Show top 10 contributions
                 top_contrib = contrib_df.head(10)
 
-                fig, ax = plt.subplots(figsize=(4, 2))
+                fig, ax = plt.subplots(figsize=(2, 1))
                 colors = ["red" if val > 0 else "blue" for val in top_contrib["Contribution"]]
                 ax.barh(top_contrib["Feature"], top_contrib["Contribution"], color=colors)
                 ax.set_xlabel("SHAP Value (Impact on Bankruptcy Prediction)")
