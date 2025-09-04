@@ -4,6 +4,7 @@ import joblib
 import pandas as pd
 import matplotlib.pyplot as plt
 import shap
+import io
 
 try:
     model = joblib.load("xgb_feature_selected_pipeline.pkl")
